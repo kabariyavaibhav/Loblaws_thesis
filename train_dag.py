@@ -1,19 +1,25 @@
 from airflow import DAG
 from airflow.providers.google.cloud.operators.vertex_ai import VertexAICustomTrainingJobOperator
-from datetime import datetime
+from datetime import datetime, timedelta
 
 default_args = {
     "owner": "airflow",
-    "start_date": datetime(2025, 3, 1),
-    "retries": 1,
+    "retries": 3,
+    "retry_delay": timedelta(minutes=5),
 }
 
-with DAG("train_model_dag", default_args=default_args, schedule_interval=None) as dag:
+with DAG(
+    "Main",
+    start_date=datetime(2024, 3, 8),
+    schedule_interval="@daily",
+    catchup=False,
+    default_args=default_args,
+) as dag:
     train_task = VertexAICustomTrainingJobOperator(
-        task_id="train_model",
-        project_id="my-ml-project",  # Replace with your GCP project ID
+        task_id="run_pipeline",
+        project_id="gen-lang-client-0736387453",
         region="us-central1",
-        staging_bucket="gs://my-ml-bucket",
+        staging_bucket="gs://lawblowbucket",
         script_path="train.py",
         container_uri="gcr.io/cloud-aiplatform/training/sklearn-cpu.0-23:latest",
     )
