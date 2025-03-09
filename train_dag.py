@@ -9,7 +9,7 @@ default_args = {
 }
 
 with DAG(
-    "train_dag",
+    "Main",
     start_date=datetime(2024, 3, 8),
     schedule_interval="@daily",
     catchup=False,
