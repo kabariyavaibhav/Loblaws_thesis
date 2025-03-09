@@ -16,7 +16,7 @@ jobs:
         uses: google-github-actions/setup-gcloud@v1
         with:
           service_account_key: ${{ secrets.GCP_SA_KEY }}
-          project_id: my-ml-project  # Replace with your project ID
+          project_id: gen-lang-client-0736387453
 
       - name: Upload DAG to Composer
         run: |
@@ -33,4 +33,4 @@ jobs:
         run: |
           gcloud composer environments run ml-composer \
             --location us-central1 \
-            trigger_dag -- train_model_dag
+            trigger_dag -- Main
